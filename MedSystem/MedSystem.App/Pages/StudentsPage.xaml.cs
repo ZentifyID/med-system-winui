@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using MedSystem.Core;
 using MedSystem.Data.Repositories;
@@ -87,5 +90,64 @@ namespace MedSystem.App.Pages
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e) => ApplyFilter();
 
         private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ApplyFilter();
+
+        // ── Действия ─────────────────────────────────────────────────
+
+        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GroupRepository.GetAll().Count == 0)
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Нет групп",
+                    Content = "Сначала добавьте хотя бы одну учебную группу.",
+                    PrimaryButtonText = "К группам",
+                    CloseButtonText = "Отмена",
+                    XamlRoot = XamlRoot,
+                };
+                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                    Frame.Navigate(typeof(GroupsPage));
+                return;
+            }
+            Frame.Navigate(typeof(StudentFormPage), 0L);
+        }
+
+        private void GroupsButton_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(GroupsPage));
+
+        private void StudentsList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (StudentsList.SelectedItem is StudentRow row)
+                Frame.Navigate(typeof(StudentFormPage), row.Id);
+        }
+
+        private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: long id })
+                Frame.Navigate(typeof(StudentFormPage), id);
+        }
+
+        private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement { Tag: long id })
+                return;
+
+            var row = _allRows.FirstOrDefault(r => r.Id == id);
+            var dialog = new ContentDialog
+            {
+                Title = "Удаление",
+                Content = $"Удалить студента «{row?.FullName}»?",
+                PrimaryButtonText = "Удалить",
+                CloseButtonText = "Отмена",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = XamlRoot,
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                StudentRepository.Delete(id);
+                LoadData();
+            }
+        }
     }
 }

@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using MedSystem.Core;
 using MedSystem.Data.Repositories;
@@ -102,5 +104,45 @@ namespace MedSystem.App.Pages
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e) => ApplyFilter();
 
         private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ApplyFilter();
+
+        // ── Действия ─────────────────────────────────────────────────
+
+        private void AddButton_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(MedicineFormPage), 0L);
+
+        private void MedicinesList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (MedicinesList.SelectedItem is MedicineRow row)
+                Frame.Navigate(typeof(MedicineFormPage), row.Id);
+        }
+
+        private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: long id })
+                Frame.Navigate(typeof(MedicineFormPage), id);
+        }
+
+        private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement { Tag: long id })
+                return;
+
+            var row = _allRows.FirstOrDefault(r => r.Id == id);
+            var dialog = new ContentDialog
+            {
+                Title = "Удаление",
+                Content = $"Удалить лекарство «{row?.Name}»?",
+                PrimaryButtonText = "Удалить",
+                CloseButtonText = "Отмена",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = XamlRoot,
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                MedicineRepository.Delete(id);
+                LoadData();
+            }
+        }
     }
 }

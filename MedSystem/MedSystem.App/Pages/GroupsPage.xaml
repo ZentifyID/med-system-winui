@@ -1,0 +1,65 @@
+<Page
+    x:Class="MedSystem.App.Pages.GroupsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MedSystem.App.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="32,24,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBlock Text="Учебные группы" Style="{StaticResource TitleTextBlockStyle}" />
+            <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+                <Button Content="Перевести на следующий курс" Click="IncrementButton_Click" />
+                <Button Content="+ Добавить" Style="{StaticResource AccentButtonStyle}"
+                        Click="AddButton_Click" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Padding="16,8" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Название" FontSize="12" Opacity="0.6" />
+            <TextBlock Grid.Column="1" Text="Студентов" FontSize="12" Opacity="0.6" />
+        </Grid>
+
+        <ListView x:Name="GroupsList" Grid.Row="2" SelectionMode="Single"
+                  IsDoubleTapEnabled="True" DoubleTapped="GroupsList_DoubleTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:GroupRow">
+                    <Grid Padding="4,10" Background="Transparent">
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Переименовать"
+                                                Tag="{x:Bind Id}" Click="RenameMenuItem_Click" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Удалить"
+                                                Tag="{x:Bind Id}" Click="DeleteMenuItem_Click" />
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind Name}" />
+                        <TextBlock Grid.Column="1" Text="{x:Bind StudentCount}" Opacity="0.8" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+            <Button Content="Назад" MinWidth="110" Click="BackButton_Click" />
+        </StackPanel>
+    </Grid>
+</Page>
