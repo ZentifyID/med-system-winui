@@ -1,4 +1,4 @@
-namespace MedSystem.Data.Models;
+namespace MedSystem.Core.Models;
 
 /// <summary>Студент. Даты хранятся строками "дд.мм.гггг" — как в python-версии.</summary>
 public class Student

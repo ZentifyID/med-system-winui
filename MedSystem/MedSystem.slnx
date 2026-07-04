@@ -10,5 +10,6 @@
     <Platform Solution="*|x86" Project="x86" />
     <Deploy />
   </Project>
+  <Project Path="MedSystem.Core/MedSystem.Core.csproj" />
   <Project Path="MedSystem.Data/MedSystem.Data.csproj" />
 </Solution>

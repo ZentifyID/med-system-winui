@@ -1,4 +1,4 @@
-using MedSystem.Data.Models;
+using MedSystem.Core.Models;
 
 namespace MedSystem.Data.Repositories;
 

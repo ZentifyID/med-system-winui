@@ -1,4 +1,4 @@
-namespace MedSystem.Data.Models;
+namespace MedSystem.Core.Models;
 
 public class Medicine
 {

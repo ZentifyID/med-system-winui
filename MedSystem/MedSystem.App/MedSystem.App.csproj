@@ -42,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MedSystem.Core\MedSystem.Core.csproj" />
     <ProjectReference Include="..\MedSystem.Data\MedSystem.Data.csproj" />
   </ItemGroup>
 
