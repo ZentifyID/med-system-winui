@@ -10,7 +10,41 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
-            <!-- Other app resources here -->
+
+            <!-- Фирменные акценты (из дизайн-референса):
+                 светлая тема — синий #0F6CBD, тёмная — бирюзовый #22B8B0 -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="SystemAccentColor">#0F6CBD</Color>
+                    <Color x:Key="SystemAccentColorLight1">#3383C7</Color>
+                    <Color x:Key="SystemAccentColorLight2">#5C9BD1</Color>
+                    <Color x:Key="SystemAccentColorLight3">#85B3DC</Color>
+                    <Color x:Key="SystemAccentColorDark1">#0D5FA6</Color>
+                    <Color x:Key="SystemAccentColorDark2">#0B528F</Color>
+                    <Color x:Key="SystemAccentColorDark3">#094578</Color>
+                    <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#0F6CBD" />
+                    <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#0D5FA6" />
+                    <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#0B528F" />
+                    <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#0F6CBD" />
+                    <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#0D5FA6" />
+                    <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#0B528F" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="SystemAccentColor">#22B8B0</Color>
+                    <Color x:Key="SystemAccentColorLight1">#45C5BE</Color>
+                    <Color x:Key="SystemAccentColorLight2">#6BD2CC</Color>
+                    <Color x:Key="SystemAccentColorLight3">#92DFDA</Color>
+                    <Color x:Key="SystemAccentColorDark1">#1EA29B</Color>
+                    <Color x:Key="SystemAccentColorDark2">#1A8C86</Color>
+                    <Color x:Key="SystemAccentColorDark3">#167671</Color>
+                    <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#22B8B0" />
+                    <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#45C5BE" />
+                    <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#1EA29B" />
+                    <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#45C5BE" />
+                    <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#6BD2CC" />
+                    <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#22B8B0" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
