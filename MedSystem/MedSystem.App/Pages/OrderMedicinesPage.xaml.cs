@@ -117,6 +117,7 @@ namespace MedSystem.App.Pages
                 Content = message,
                 CloseButtonText = "Понятно",
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
             await dialog.ShowAsync();
         }

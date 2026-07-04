@@ -51,10 +51,11 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0"
+                    HorizontalAlignment="Right">
+            <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />
             <Button Content="Оформить заказ" Style="{StaticResource AccentButtonStyle}"
                     MinWidth="150" Click="ConfirmButton_Click" />
-            <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />
         </StackPanel>
     </Grid>
 </Page>

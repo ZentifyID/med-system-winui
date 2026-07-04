@@ -51,14 +51,15 @@ namespace MedSystem.App.Pages
 
         private void LoadData()
         {
+            var dark = ActualTheme == Microsoft.UI.Xaml.ElementTheme.Dark;
             _allRows = StudentRepository.GetAll().Select(s =>
             {
                 var sanStatus = ExpirationRules.GetSingleCheckupStatus(s.SanminimumDate);
                 var medStatus = ExpirationRules.GetSingleCheckupStatus(s.MedicalExamDate);
                 var fluStatus = ExpirationRules.GetSingleCheckupStatus(s.FluorographyDate);
-                var (sanBg, sanFg) = Badges.For(sanStatus.IsExpired, sanStatus.IsExpiring);
-                var (medBg, medFg) = Badges.For(medStatus.IsExpired, medStatus.IsExpiring);
-                var (fluBg, fluFg) = Badges.For(fluStatus.IsExpired, fluStatus.IsExpiring);
+                var (sanBg, sanFg) = Badges.For(sanStatus.IsExpired, sanStatus.IsExpiring, dark);
+                var (medBg, medFg) = Badges.For(medStatus.IsExpired, medStatus.IsExpiring, dark);
+                var (fluBg, fluFg) = Badges.For(fluStatus.IsExpired, fluStatus.IsExpiring, dark);
                 var (isExpired, isExpiring) = ExpirationRules.GetPersonStatus(
                     new[] { s.SanminimumDate, s.MedicalExamDate, s.FluorographyDate });
                 return new StudentRow
@@ -122,6 +123,7 @@ namespace MedSystem.App.Pages
                     PrimaryButtonText = "К группам",
                     CloseButtonText = "Отмена",
                     XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
                 };
                 if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                     Frame.Navigate(typeof(GroupsPage));
@@ -159,6 +161,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)

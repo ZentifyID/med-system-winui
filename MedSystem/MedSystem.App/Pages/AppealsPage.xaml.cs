@@ -119,6 +119,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)

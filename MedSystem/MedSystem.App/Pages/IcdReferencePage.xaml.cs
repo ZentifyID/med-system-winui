@@ -98,9 +98,8 @@ namespace MedSystem.App.Pages
                 Header = "Наименование диагноза",
                 Text = existing?.Name ?? "",
                 MaxLength = 255,
-                Margin = new Thickness(0, 12, 0, 0),
             };
-            var panel = new StackPanel();
+            var panel = new StackPanel { MinWidth = 400, Spacing = 12 };
             panel.Children.Add(codeBox);
             panel.Children.Add(nameBox);
 
@@ -112,6 +111,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Primary,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() != ContentDialogResult.Primary)
@@ -153,6 +153,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
@@ -176,6 +177,7 @@ namespace MedSystem.App.Pages
                 Content = message,
                 CloseButtonText = "Понятно",
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
             await dialog.ShowAsync();
         }

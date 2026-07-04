@@ -86,12 +86,12 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{x:Bind Name}" VerticalAlignment="Center" />
-                                <Border Grid.Column="1" Background="{x:Bind QtyBg}" CornerRadius="10"
+                                <Border Grid.Column="1" Background="{x:Bind QtyBg}" CornerRadius="4"
                                 Padding="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Text="{x:Bind Quantity}" Foreground="{x:Bind QtyFg}" FontSize="12" />
                         </Border>
                                 <TextBlock Grid.Column="2" Text="{x:Bind Dosage}" Opacity="0.8" VerticalAlignment="Center" />
-                                <Border Grid.Column="3" Background="{x:Bind DateBg}" CornerRadius="10"
+                                <Border Grid.Column="3" Background="{x:Bind DateBg}" CornerRadius="4"
                                 Padding="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Text="{x:Bind ExpirationDate}" Foreground="{x:Bind DateFg}" FontSize="12" />
                         </Border>

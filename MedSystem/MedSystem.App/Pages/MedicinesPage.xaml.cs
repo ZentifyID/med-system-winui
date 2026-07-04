@@ -53,12 +53,13 @@ namespace MedSystem.App.Pages
 
         private void LoadData()
         {
+            var dark = ActualTheme == ElementTheme.Dark;
             _allRows = MedicineRepository.GetAll().Select(m =>
             {
                 var (isExpired, isExpiring) = ExpirationRules.GetMedicineStatus(m.ExpirationDate);
                 var isLow = m.Quantity <= LowQuantityThreshold;
-                var (dateBg, dateFg) = Badges.For(isExpired, isExpiring);
-                var (qtyBg, qtyFg) = Badges.For(isLow, false);
+                var (dateBg, dateFg) = Badges.For(isExpired, isExpiring, dark);
+                var (qtyBg, qtyFg) = Badges.For(isLow, false, dark);
                 return new MedicineRow
                 {
                     Id = m.Id,
@@ -125,6 +126,7 @@ namespace MedSystem.App.Pages
                     Content = "Все лекарства в норме. Заказывать ничего не нужно.",
                     CloseButtonText = "Понятно",
                     XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
                 };
                 await dialog.ShowAsync();
                 return;
@@ -158,6 +160,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)

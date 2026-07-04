@@ -74,6 +74,8 @@ namespace MedSystem.App.Pages
         {
             var box = new TextBox
             {
+                MinWidth = 400,
+                Header = "Название группы",
                 PlaceholderText = "Например: 11-ИС-А",
                 Text = existing?.Name ?? "",
                 MaxLength = 64,
@@ -86,6 +88,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Primary,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() != ContentDialogResult.Primary)
@@ -136,6 +139,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
@@ -157,6 +161,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() != ContentDialogResult.Primary)
@@ -189,6 +194,7 @@ namespace MedSystem.App.Pages
                 Content = message,
                 CloseButtonText = "Понятно",
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
             await dialog.ShowAsync();
         }

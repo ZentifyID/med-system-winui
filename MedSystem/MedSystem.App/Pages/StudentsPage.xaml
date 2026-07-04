@@ -89,15 +89,15 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{x:Bind FullName}" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Text="{x:Bind GroupName}" Opacity="0.8" VerticalAlignment="Center" />
-                                <Border Grid.Column="2" Background="{x:Bind SanminimumBg}" CornerRadius="10"
+                                <Border Grid.Column="2" Background="{x:Bind SanminimumBg}" CornerRadius="4"
                                 Padding="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Text="{x:Bind Sanminimum}" Foreground="{x:Bind SanminimumFg}" FontSize="12" />
                         </Border>
-                                <Border Grid.Column="3" Background="{x:Bind MedicalExamBg}" CornerRadius="10"
+                                <Border Grid.Column="3" Background="{x:Bind MedicalExamBg}" CornerRadius="4"
                                 Padding="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Text="{x:Bind MedicalExam}" Foreground="{x:Bind MedicalExamFg}" FontSize="12" />
                         </Border>
-                                <Border Grid.Column="4" Background="{x:Bind FluorographyBg}" CornerRadius="10"
+                                <Border Grid.Column="4" Background="{x:Bind FluorographyBg}" CornerRadius="4"
                                 Padding="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock Text="{x:Bind Fluorography}" Foreground="{x:Bind FluorographyFg}" FontSize="12" />
                         </Border>

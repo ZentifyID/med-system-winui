@@ -66,10 +66,10 @@
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
+            <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />
             <Button Content="Сохранить" Style="{StaticResource AccentButtonStyle}"
                     MinWidth="130" Click="SaveButton_Click" />
-            <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />
         </StackPanel>
     </Grid>
 </Page>

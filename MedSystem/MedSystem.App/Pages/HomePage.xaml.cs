@@ -1,6 +1,7 @@
+using System;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using MedSystem.Data;
 using MedSystem.Data.Repositories;
 
 namespace MedSystem.App.Pages
@@ -19,7 +20,35 @@ namespace MedSystem.App.Pages
             StudentsCount.Text = StudentRepository.Count().ToString();
             MedicinesCount.Text = MedicineRepository.Count().ToString();
             AppealsCount.Text = AppealRepository.Count().ToString();
-            DbPathText.Text = Db.DbPath;
         }
+
+        // ── Быстрые действия ─────────────────────────────────────────
+
+        private void AddEmployee_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(EmployeeFormPage), 0L);
+
+        private async void AddStudent_Click(object sender, RoutedEventArgs e)
+        {
+            if (GroupRepository.GetAll().Count == 0)
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Нет групп",
+                    Content = "Сначала добавьте хотя бы одну учебную группу (раздел «Студенты» → «Группы»).",
+                    CloseButtonText = "Понятно",
+                    XamlRoot = XamlRoot,
+                    RequestedTheme = ActualTheme,
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+            Frame.Navigate(typeof(StudentFormPage), 0L);
+        }
+
+        private void AddMedicine_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(MedicineFormPage), 0L);
+
+        private void AddAppeal_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(AppealFormPage), 0L);
     }
 }

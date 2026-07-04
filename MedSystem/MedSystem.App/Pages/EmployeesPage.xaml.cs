@@ -52,14 +52,15 @@ namespace MedSystem.App.Pages
 
         private void LoadData()
         {
+            var dark = ActualTheme == Microsoft.UI.Xaml.ElementTheme.Dark;
             _allRows = EmployeeRepository.GetAll().Select(emp =>
             {
                 var sanStatus = ExpirationRules.GetSingleCheckupStatus(emp.SanminimumDate);
                 var medStatus = ExpirationRules.GetSingleCheckupStatus(emp.MedicalExamDate);
                 var fluStatus = ExpirationRules.GetSingleCheckupStatus(emp.FluorographyDate);
-                var (sanBg, sanFg) = Badges.For(sanStatus.IsExpired, sanStatus.IsExpiring);
-                var (medBg, medFg) = Badges.For(medStatus.IsExpired, medStatus.IsExpiring);
-                var (fluBg, fluFg) = Badges.For(fluStatus.IsExpired, fluStatus.IsExpiring);
+                var (sanBg, sanFg) = Badges.For(sanStatus.IsExpired, sanStatus.IsExpiring, dark);
+                var (medBg, medFg) = Badges.For(medStatus.IsExpired, medStatus.IsExpiring, dark);
+                var (fluBg, fluFg) = Badges.For(fluStatus.IsExpired, fluStatus.IsExpiring, dark);
                 var (isExpired, isExpiring) = ExpirationRules.GetPersonStatus(
                     new[] { emp.SanminimumDate, emp.MedicalExamDate, emp.FluorographyDate });
                 return new EmployeeRow
@@ -141,6 +142,7 @@ namespace MedSystem.App.Pages
                 CloseButtonText = "Отмена",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = XamlRoot,
+                RequestedTheme = ActualTheme,
             };
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
