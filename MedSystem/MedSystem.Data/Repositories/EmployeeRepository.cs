@@ -11,6 +11,14 @@ public static class EmployeeRepository
         oms, address, sanminimum_date, medical_exam_date, fluorography_date
         """;
 
+    public static long Count()
+    {
+        using var conn = Db.Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT COUNT(*) FROM employees";
+        return Convert.ToInt64(cmd.ExecuteScalar());
+    }
+
     public static List<Employee> GetAll()
     {
         using var conn = Db.Open();

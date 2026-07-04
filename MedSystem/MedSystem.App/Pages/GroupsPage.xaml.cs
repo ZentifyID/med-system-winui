@@ -38,13 +38,13 @@ namespace MedSystem.App.Pages
         private void LoadData()
         {
             Rows.Clear();
-            foreach (var g in GroupRepository.GetAll())
+            foreach (var (group, studentCount) in GroupRepository.GetAllWithCounts())
             {
                 Rows.Add(new GroupRow
                 {
-                    Id = g.Id,
-                    Name = g.Name,
-                    StudentCount = GroupRepository.GetStudentCount(g.Id).ToString(),
+                    Id = group.Id,
+                    Name = group.Name,
+                    StudentCount = studentCount.ToString(),
                 });
             }
         }

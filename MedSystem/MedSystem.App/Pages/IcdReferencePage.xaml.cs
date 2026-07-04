@@ -26,6 +26,9 @@ namespace MedSystem.App.Pages
         public IcdReferencePage()
         {
             InitializeComponent();
+            // Страница кэшируется: поиск и фильтр сохраняются между переходами,
+            // данные всё равно перезагружаются в OnNavigatedTo
+            NavigationCacheMode = NavigationCacheMode.Required;
             IcdList.ItemsSource = Rows;
         }
 

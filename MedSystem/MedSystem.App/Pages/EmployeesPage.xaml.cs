@@ -32,6 +32,9 @@ namespace MedSystem.App.Pages
         public EmployeesPage()
         {
             InitializeComponent();
+            // Страница кэшируется: поиск и фильтр сохраняются между переходами,
+            // данные всё равно перезагружаются в OnNavigatedTo
+            NavigationCacheMode = NavigationCacheMode.Required;
             EmployeesList.ItemsSource = Rows;
         }
 

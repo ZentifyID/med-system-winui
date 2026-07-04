@@ -12,6 +12,7 @@ namespace MedSystem.App
         {
             InitializeComponent();
             Title = "Med System";
+            AppWindow.Resize(new Windows.Graphics.SizeInt32(1280, 820));
             ContentFrame.Navigate(typeof(HomePage));
 
             // Автоперевод групп на следующий курс (раз в год после 15 августа)

@@ -15,10 +15,10 @@ namespace MedSystem.App.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            EmployeesCount.Text = EmployeeRepository.GetAll().Count.ToString();
-            StudentsCount.Text = StudentRepository.GetAll().Count.ToString();
-            MedicinesCount.Text = MedicineRepository.GetAll().Count.ToString();
-            AppealsCount.Text = AppealRepository.GetAll().Count.ToString();
+            EmployeesCount.Text = EmployeeRepository.Count().ToString();
+            StudentsCount.Text = StudentRepository.Count().ToString();
+            MedicinesCount.Text = MedicineRepository.Count().ToString();
+            AppealsCount.Text = AppealRepository.Count().ToString();
             DbPathText.Text = Db.DbPath;
         }
     }

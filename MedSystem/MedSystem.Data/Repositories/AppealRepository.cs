@@ -9,6 +9,14 @@ public static class AppealRepository
         group_name, complaints, diagnosis, actions_recommendations
         """;
 
+    public static long Count()
+    {
+        using var conn = Db.Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT COUNT(*) FROM appeals";
+        return Convert.ToInt64(cmd.ExecuteScalar());
+    }
+
     public static List<Appeal> GetAll()
     {
         using var conn = Db.Open();

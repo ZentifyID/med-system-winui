@@ -17,14 +17,13 @@ public static class Db
     public static string DbPath { get; set; } =
         Path.Combine(AppContext.BaseDirectory, "med_system.db");
 
-    /// <summary>Открывает соединение с включёнными внешними ключами.</summary>
+    /// <summary>Открывает соединение с включёнными внешними ключами.
+    /// Foreign Keys=True в строке подключения надёжнее ручного PRAGMA:
+    /// применяется и к соединениям из пула.</summary>
     public static SqliteConnection Open()
     {
-        var conn = new SqliteConnection($"Data Source={DbPath}");
+        var conn = new SqliteConnection($"Data Source={DbPath};Foreign Keys=True");
         conn.Open();
-        using var cmd = conn.CreateCommand();
-        cmd.CommandText = "PRAGMA foreign_keys = ON";
-        cmd.ExecuteNonQuery();
         return conn;
     }
 }

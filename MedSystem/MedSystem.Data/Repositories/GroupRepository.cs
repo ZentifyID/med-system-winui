@@ -32,6 +32,25 @@ public static class GroupRepository
         return new Group { Id = reader.GetInt64(0), Name = reader.GetString(1) };
     }
 
+    /// <summary>Группы со счётчиком студентов одним запросом (без N+1).</summary>
+    public static List<(Group Group, long StudentCount)> GetAllWithCounts()
+    {
+        using var conn = Db.Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = """
+            SELECT g.id, g.name, COUNT(s.id)
+            FROM groups g
+            LEFT JOIN students s ON s.group_id = g.id
+            GROUP BY g.id, g.name
+            ORDER BY g.name
+            """;
+        using var reader = cmd.ExecuteReader();
+        var result = new List<(Group, long)>();
+        while (reader.Read())
+            result.Add((new Group { Id = reader.GetInt64(0), Name = reader.GetString(1) }, reader.GetInt64(2)));
+        return result;
+    }
+
     public static long GetStudentCount(long groupId)
     {
         using var conn = Db.Open();

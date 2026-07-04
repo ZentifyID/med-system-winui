@@ -31,6 +31,9 @@ namespace MedSystem.App.Pages
         public StudentsPage()
         {
             InitializeComponent();
+            // Страница кэшируется: поиск и фильтр сохраняются между переходами,
+            // данные всё равно перезагружаются в OnNavigatedTo
+            NavigationCacheMode = NavigationCacheMode.Required;
             StudentsList.ItemsSource = Rows;
         }
 

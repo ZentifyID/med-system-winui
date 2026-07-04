@@ -4,6 +4,14 @@ namespace MedSystem.Data.Repositories;
 
 public static class MedicineRepository
 {
+    public static long Count()
+    {
+        using var conn = Db.Open();
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT COUNT(*) FROM medicines";
+        return Convert.ToInt64(cmd.ExecuteScalar());
+    }
+
     public static List<Medicine> GetAll()
     {
         using var conn = Db.Open();
