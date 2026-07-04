@@ -11,7 +11,7 @@ namespace MedSystem.App
     /// </summary>
     public static class Badges
     {
-        public static Brush TransparentBg { get; } = new SolidColorBrush(Colors.Transparent);
+        public static Brush TransparentBg { get; } = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
 
         public static Brush NormalFg => Get("TextFillColorSecondaryBrush", Color.FromArgb(255, 96, 96, 96));
 

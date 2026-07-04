@@ -27,7 +27,7 @@ namespace MedSystem.App
         }
 
         private static ElementTheme LoadSaved() =>
-            Windows.Storage.ApplicationData.Current.LocalSettings.Values[SettingsKey] as string switch
+            (Windows.Storage.ApplicationData.Current.LocalSettings.Values[SettingsKey] as string) switch
             {
                 "Light" => ElementTheme.Light,
                 "Dark" => ElementTheme.Dark,
