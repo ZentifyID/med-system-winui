@@ -83,6 +83,60 @@ public static class AppealRepository
         cmd.ExecuteNonQuery();
     }
 
+    /// <summary>Сотрудники и студенты одним списком — для выбора
+    /// отправителя обращения (перенос fetch_persons_for_combobox).</summary>
+    public static List<PersonOption> GetPersonsForPicker()
+    {
+        var persons = new List<PersonOption>();
+        using var conn = Db.Open();
+
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = """
+                SELECT last_name, first_name, middle_name, birth_date, affiliation
+                FROM employees
+                """;
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var fio = string.Join(' ', new[]
+                {
+                    reader.GetString(0), reader.GetString(1), reader.GetString(2)
+                }.Where(p => !string.IsNullOrWhiteSpace(p)));
+                persons.Add(new PersonOption
+                {
+                    Display = $"{fio} (Сотрудник, {reader.GetString(4)})",
+                    BirthDate = reader.GetString(3),
+                    GroupName = reader.GetString(4),
+                });
+            }
+        }
+
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = """
+                SELECT s.last_name, s.first_name, s.middle_name, s.birth_date, g.name
+                FROM students s JOIN groups g ON s.group_id = g.id
+                """;
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var fio = string.Join(' ', new[]
+                {
+                    reader.GetString(0), reader.GetString(1), reader.GetString(2)
+                }.Where(p => !string.IsNullOrWhiteSpace(p)));
+                persons.Add(new PersonOption
+                {
+                    Display = $"{fio} (Группа {reader.GetString(4)})",
+                    BirthDate = reader.GetString(3),
+                    GroupName = reader.GetString(4),
+                });
+            }
+        }
+
+        return persons.OrderBy(p => p.Display).ToList();
+    }
+
     private static Appeal Map(Microsoft.Data.Sqlite.SqliteDataReader r) => new()
     {
         Id = r.GetInt64(0),

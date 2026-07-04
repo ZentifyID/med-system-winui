@@ -77,6 +77,17 @@ public static class Validators
         return errors;
     }
 
+    public static List<string> ValidateAppeal(Appeal a)
+    {
+        var errors = new List<string>();
+        if (a.Number <= 0)
+            errors.Add("Номер обращения должен быть положительным числом.");
+        CheckDate(errors, a.CreatedAt, "Дата обращения");
+        CheckRequired(errors, a.Sender, "Отправитель", maxLength: 255);
+        CheckRequired(errors, a.Complaints, "Жалобы", maxLength: 2000);
+        return errors;
+    }
+
     // ── Вспомогательные проверки ─────────────────────────────────────
 
     private static void CheckRequired(List<string> errors, string value, string label, int maxLength = 0)

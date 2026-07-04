@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using MedSystem.Data.Repositories;
 
@@ -77,6 +80,49 @@ namespace MedSystem.App.Pages
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ApplyFilter();
+        }
+
+        // ── Действия ─────────────────────────────────────────────────
+
+        private void AddButton_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(AppealFormPage), 0L);
+
+        private void IcdButton_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(IcdReferencePage));
+
+        private void AppealsList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (AppealsList.SelectedItem is AppealRow row)
+                Frame.Navigate(typeof(AppealFormPage), row.Id);
+        }
+
+        private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: long id })
+                Frame.Navigate(typeof(AppealFormPage), id);
+        }
+
+        private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement { Tag: long id })
+                return;
+
+            var row = _allRows.FirstOrDefault(r => r.Id == id);
+            var dialog = new ContentDialog
+            {
+                Title = "Удаление",
+                Content = $"Удалить обращение №{row?.Number}?",
+                PrimaryButtonText = "Удалить",
+                CloseButtonText = "Отмена",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = XamlRoot,
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                AppealRepository.Delete(id);
+                LoadData();
+            }
         }
     }
 }
