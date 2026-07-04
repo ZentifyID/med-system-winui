@@ -26,17 +26,17 @@
                     <FontIcon Glyph="&#xE77B;" />
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem Content="Студенты" Tag="students" IsEnabled="False">
+            <NavigationViewItem Content="Студенты" Tag="students">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE716;" />
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem Content="Лекарства" Tag="medicines" IsEnabled="False">
+            <NavigationViewItem Content="Лекарства" Tag="medicines">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE95E;" />
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem Content="Обращения" Tag="appeals" IsEnabled="False">
+            <NavigationViewItem Content="Обращения" Tag="appeals">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE7C3;" />
                 </NavigationViewItem.Icon>

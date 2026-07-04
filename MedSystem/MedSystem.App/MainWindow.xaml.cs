@@ -23,6 +23,9 @@ namespace MedSystem.App
             {
                 "home" => typeof(HomePage),
                 "employees" => typeof(EmployeesPage),
+                "students" => typeof(StudentsPage),
+                "medicines" => typeof(MedicinesPage),
+                "appeals" => typeof(AppealsPage),
                 _ => null,
             };
 
