@@ -19,6 +19,7 @@
             <TextBlock Text="Лекарства" Style="{StaticResource TitleTextBlockStyle}" />
             <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right">
                 <TextBlock x:Name="CountText" Text="" VerticalAlignment="Center" Opacity="0.6" />
+                <Button Content="Заказать" Click="OrderButton_Click" />
                 <Button Content="+ Добавить" Style="{StaticResource AccentButtonStyle}"
                         Click="AddButton_Click" />
             </StackPanel>

@@ -2,6 +2,7 @@ using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using MedSystem.App.Pages;
+using MedSystem.Data.Repositories;
 
 namespace MedSystem.App
 {
@@ -12,6 +13,27 @@ namespace MedSystem.App
             InitializeComponent();
             Title = "Med System";
             ContentFrame.Navigate(typeof(HomePage));
+
+            // Автоперевод групп на следующий курс (раз в год после 15 августа)
+            DispatcherQueue.TryEnqueue(CheckAcademicYear);
+        }
+
+        private void CheckAcademicYear()
+        {
+            try
+            {
+                var count = GroupRepository.CheckAndAutoIncrementGroups();
+                if (count > 0)
+                {
+                    StartupInfoBar.Message =
+                        $"Начался новый учебный год! Групп переведено на следующий курс: {count}.";
+                    StartupInfoBar.IsOpen = true;
+                }
+            }
+            catch
+            {
+                // Не мешаем запуску приложения
+            }
         }
 
         private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

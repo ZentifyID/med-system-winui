@@ -110,6 +110,24 @@ namespace MedSystem.App.Pages
         private void AddButton_Click(object sender, RoutedEventArgs e) =>
             Frame.Navigate(typeof(MedicineFormPage), 0L);
 
+        private async void OrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            var hasCandidates = _allRows.Any(r => r.IsLowQuantity || r.IsExpired || r.IsExpiring);
+            if (!hasCandidates)
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Заказ лекарств",
+                    Content = "Все лекарства в норме. Заказывать ничего не нужно.",
+                    CloseButtonText = "Понятно",
+                    XamlRoot = XamlRoot,
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+            Frame.Navigate(typeof(OrderMedicinesPage));
+        }
+
         private void MedicinesList_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             if (MedicinesList.SelectedItem is MedicineRow row)
