@@ -3,17 +3,46 @@
     x:Class="MedSystem.App.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MedSystem.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="MedSystem.App">
+    mc:Ignorable="d">
 
-    <Window.SystemBackdrop>
-        <MicaBackdrop />
-    </Window.SystemBackdrop>
+    <NavigationView
+        x:Name="Nav"
+        PaneDisplayMode="Left"
+        OpenPaneLength="220"
+        IsBackButtonVisible="Collapsed"
+        IsSettingsVisible="False"
+        SelectionChanged="Nav_SelectionChanged">
 
-    <Grid>
+        <NavigationView.MenuItems>
+            <NavigationViewItem Content="Главная" Tag="home" IsSelected="True">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE80F;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Сотрудники" Tag="employees">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE77B;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Студенты" Tag="students" IsEnabled="False">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE716;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Лекарства" Tag="medicines" IsEnabled="False">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE95E;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Обращения" Tag="appeals" IsEnabled="False">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE7C3;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+        </NavigationView.MenuItems>
 
-    </Grid>
+        <Frame x:Name="ContentFrame" />
+    </NavigationView>
 </Window>
