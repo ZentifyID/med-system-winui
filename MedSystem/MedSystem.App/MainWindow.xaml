@@ -8,12 +8,29 @@
     mc:Ignorable="d">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Кастомный заголовок окна (контент продлён под титлбар) -->
+        <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent">
+            <StackPanel Orientation="Horizontal" Spacing="10"
+                        VerticalAlignment="Center" Margin="16,0,0,0">
+                <FontIcon Glyph="&#xE95E;" FontSize="14"
+                          Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                <TextBlock Text="Med System" Style="{StaticResource CaptionTextBlockStyle}"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
         <NavigationView
             x:Name="Nav"
-            PaneDisplayMode="Left"
+            Grid.Row="1"
+            PaneDisplayMode="Auto"
             OpenPaneLength="220"
             IsBackButtonVisible="Collapsed"
-            IsSettingsVisible="False"
+            IsSettingsVisible="True"
             SelectionChanged="Nav_SelectionChanged">
 
             <NavigationView.MenuItems>
@@ -44,11 +61,18 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
 
-            <Frame x:Name="ContentFrame" />
+            <!-- Контент на «слое» со скруглённым углом, как в Параметрах Windows -->
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1,1,0,0"
+                    CornerRadius="8,0,0,0">
+                <Frame x:Name="ContentFrame" />
+            </Border>
         </NavigationView>
 
         <!-- Уведомление о начале нового учебного года -->
         <InfoBar x:Name="StartupInfoBar"
+                 Grid.Row="1"
                  Severity="Informational"
                  Title="Новый учебный год"
                  IsOpen="False"

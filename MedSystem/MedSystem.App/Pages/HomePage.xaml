@@ -10,10 +10,11 @@
         <TextBlock Text="Главная" Style="{StaticResource TitleTextBlockStyle}" />
         <TextBlock Text="Обзор системы" Style="{StaticResource BodyTextBlockStyle}" Opacity="0.6" />
 
-        <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8,0,0">
+        <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="8"
+                               ItemWidth="184" ItemHeight="104" Margin="0,8,0,0">
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1" CornerRadius="8" Padding="20" MinWidth="160">
+                    BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,12,12">
                 <StackPanel Spacing="4">
                     <TextBlock x:Name="EmployeesCount" Text="0" Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Text="Сотрудники" Opacity="0.6" />
@@ -21,7 +22,7 @@
             </Border>
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1" CornerRadius="8" Padding="20" MinWidth="160">
+                    BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,12,12">
                 <StackPanel Spacing="4">
                     <TextBlock x:Name="StudentsCount" Text="0" Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Text="Студенты" Opacity="0.6" />
@@ -29,7 +30,7 @@
             </Border>
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1" CornerRadius="8" Padding="20" MinWidth="160">
+                    BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,12,12">
                 <StackPanel Spacing="4">
                     <TextBlock x:Name="MedicinesCount" Text="0" Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Text="Лекарства" Opacity="0.6" />
@@ -37,13 +38,13 @@
             </Border>
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1" CornerRadius="8" Padding="20" MinWidth="160">
+                    BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,12,12">
                 <StackPanel Spacing="4">
                     <TextBlock x:Name="AppealsCount" Text="0" Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Text="Обращения" Opacity="0.6" />
                 </StackPanel>
             </Border>
-        </StackPanel>
+        </VariableSizedWrapGrid>
 
         <TextBlock Text="Файл базы данных:" Margin="0,16,0,0" Opacity="0.6" />
         <TextBlock x:Name="DbPathText" IsTextSelectionEnabled="True" FontSize="12" Opacity="0.8" />

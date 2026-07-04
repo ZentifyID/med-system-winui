@@ -11,7 +11,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -44,51 +43,64 @@
         </Grid>
 
         <!-- Шапка таблицы -->
-        <Grid Grid.Row="2" Padding="16,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="1.4*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="ФИО" FontSize="12" Opacity="0.6" />
-            <TextBlock Grid.Column="1" Text="Принадлежность" FontSize="12" Opacity="0.6" />
-            <TextBlock Grid.Column="2" Text="Санминимум" FontSize="12" Opacity="0.6" />
-            <TextBlock Grid.Column="3" Text="Медосмотр" FontSize="12" Opacity="0.6" />
-            <TextBlock Grid.Column="4" Text="Флюорография" FontSize="12" Opacity="0.6" />
-        </Grid>
+        <Border Grid.Row="2" CornerRadius="8" BorderThickness="1"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Padding="16,12,16,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="1.4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ФИО" FontSize="12" Opacity="0.6" />
+                    <TextBlock Grid.Column="1" Text="Принадлежность" FontSize="12" Opacity="0.6" />
+                    <TextBlock Grid.Column="2" Text="Санминимум" FontSize="12" Opacity="0.6" />
+                    <TextBlock Grid.Column="3" Text="Медосмотр" FontSize="12" Opacity="0.6" />
+                    <TextBlock Grid.Column="4" Text="Флюорография" FontSize="12" Opacity="0.6" />
+                </Grid>
+                <Rectangle Grid.Row="1" Height="1" HorizontalAlignment="Stretch"
+                           Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+                <ListView x:Name="EmployeesList" Grid.Row="2" Margin="4,2,4,6" SelectionMode="Single"
+                          IsDoubleTapEnabled="True" DoubleTapped="EmployeesList_DoubleTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:EmployeeRow">
+                            <Grid Padding="4,10" Background="Transparent">
+                                <Grid.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Открыть / Редактировать"
+                                                        Tag="{x:Bind Id}" Click="OpenMenuItem_Click" />
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem Text="Удалить"
+                                                        Tag="{x:Bind Id}" Click="DeleteMenuItem_Click" />
+                                    </MenuFlyout>
+                                </Grid.ContextFlyout>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="1.4*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{x:Bind FullName}" />
+                                <TextBlock Grid.Column="1" Text="{x:Bind Affiliation}" Opacity="0.8" />
+                                <TextBlock Grid.Column="2" Text="{x:Bind Sanminimum}" Opacity="0.8" />
+                                <TextBlock Grid.Column="3" Text="{x:Bind MedicalExam}" Opacity="0.8" />
+                                <TextBlock Grid.Column="4" Text="{x:Bind Fluorography}" Opacity="0.8" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
 
         <!-- Список -->
-        <ListView x:Name="EmployeesList" Grid.Row="3" SelectionMode="Single"
-                  IsDoubleTapEnabled="True" DoubleTapped="EmployeesList_DoubleTapped">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:EmployeeRow">
-                    <Grid Padding="4,10" Background="Transparent">
-                        <Grid.ContextFlyout>
-                            <MenuFlyout>
-                                <MenuFlyoutItem Text="Открыть / Редактировать"
-                                                Tag="{x:Bind Id}" Click="OpenMenuItem_Click" />
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem Text="Удалить"
-                                                Tag="{x:Bind Id}" Click="DeleteMenuItem_Click" />
-                            </MenuFlyout>
-                        </Grid.ContextFlyout>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="1.4*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{x:Bind FullName}" />
-                        <TextBlock Grid.Column="1" Text="{x:Bind Affiliation}" Opacity="0.8" />
-                        <TextBlock Grid.Column="2" Text="{x:Bind Sanminimum}" Opacity="0.8" />
-                        <TextBlock Grid.Column="3" Text="{x:Bind MedicalExam}" Opacity="0.8" />
-                        <TextBlock Grid.Column="4" Text="{x:Bind Fluorography}" Opacity="0.8" />
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
     </Grid>
 </Page>

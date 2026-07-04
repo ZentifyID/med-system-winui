@@ -1,6 +1,7 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using MedSystem.App.Pages;
 using MedSystem.Data.Repositories;
 
@@ -12,7 +13,18 @@ namespace MedSystem.App
         {
             InitializeComponent();
             Title = "Med System";
+
+            // Mica-фон и контент под заголовком окна (Fluent Design)
+            SystemBackdrop = new MicaBackdrop();
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+
             AppWindow.Resize(new Windows.Graphics.SizeInt32(1280, 820));
+
+            if (Nav.SettingsItem is NavigationViewItem settingsItem)
+                settingsItem.Content = "Настройки";
+
+            ThemeHelper.Initialize(this);
             ContentFrame.Navigate(typeof(HomePage));
 
             // Автоперевод групп на следующий курс (раз в год после 15 августа)
@@ -39,6 +51,13 @@ namespace MedSystem.App
 
         private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            if (args.IsSettingsSelected)
+            {
+                if (ContentFrame.CurrentSourcePageType != typeof(SettingsPage))
+                    ContentFrame.Navigate(typeof(SettingsPage));
+                return;
+            }
+
             if (args.SelectedItem is not NavigationViewItem item || item.Tag is not string tag)
                 return;
 
