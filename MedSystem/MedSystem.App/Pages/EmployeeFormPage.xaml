@@ -1,0 +1,101 @@
+<Page
+    x:Class="MedSystem.App.Pages.EmployeeFormPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="32,24,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="TitleText" Grid.Row="0" Text="Новый сотрудник"
+                   Style="{StaticResource TitleTextBlockStyle}" />
+
+        <ScrollViewer Grid.Row="1" Margin="0,16,0,16" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="16" MaxWidth="720" HorizontalAlignment="Left">
+
+                <TextBlock Text="Личные данные" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <Grid ColumnSpacing="12" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="LastNameBox" Grid.Row="0" Grid.Column="0"
+                             Header="Фамилия" MaxLength="50" />
+                    <TextBox x:Name="FirstNameBox" Grid.Row="0" Grid.Column="1"
+                             Header="Имя" MaxLength="50" />
+                    <TextBox x:Name="MiddleNameBox" Grid.Row="1" Grid.Column="0"
+                             Header="Отчество" MaxLength="50" />
+                    <TextBox x:Name="BirthDateBox" Grid.Row="1" Grid.Column="1"
+                             Header="Дата рождения" PlaceholderText="дд.мм.гггг" MaxLength="10" />
+                    <ComboBox x:Name="AffiliationBox" Grid.Row="2" Grid.Column="0"
+                              Header="Принадлежность" SelectedIndex="0" HorizontalAlignment="Stretch">
+                        <x:String>основной</x:String>
+                        <x:String>внешний совместитель</x:String>
+                    </ComboBox>
+                    <TextBox x:Name="OmsBox" Grid.Row="2" Grid.Column="1"
+                             Header="Полис ОМС (16 цифр)" MaxLength="16" />
+                </Grid>
+
+                <TextBox x:Name="AddressBox" Header="Адрес проживания" MaxLength="255" />
+
+                <TextBlock Text="Паспорт" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,8,0,0" />
+                <Grid ColumnSpacing="12" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="PassportSeriesBox" Grid.Row="0" Grid.Column="0"
+                             Header="Серия (4 цифры)" MaxLength="4" />
+                    <TextBox x:Name="PassportNumberBox" Grid.Row="0" Grid.Column="1"
+                             Header="Номер (6 цифр)" MaxLength="6" />
+                    <TextBox x:Name="PassportIssueDateBox" Grid.Row="1" Grid.Column="0"
+                             Header="Дата выдачи" PlaceholderText="дд.мм.гггг" MaxLength="10" />
+                    <TextBox x:Name="PassportDeptCodeBox" Grid.Row="1" Grid.Column="1"
+                             Header="Код подразделения (6 цифр)" MaxLength="6" />
+                    <TextBox x:Name="PassportIssuedByBox" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                             Header="Кем выдан" MaxLength="255" />
+                </Grid>
+
+                <TextBlock Text="Медицинские сроки" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,8,0,0" />
+                <Grid ColumnSpacing="12" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SanminimumBox" Grid.Column="0"
+                             Header="Дата санминимума" PlaceholderText="дд.мм.гггг" MaxLength="10" />
+                    <TextBox x:Name="MedicalExamBox" Grid.Column="1"
+                             Header="Дата медосмотра" PlaceholderText="дд.мм.гггг" MaxLength="10" />
+                    <TextBox x:Name="FluorographyBox" Grid.Column="2"
+                             Header="Дата флюорографии" PlaceholderText="дд.мм.гггг" MaxLength="10" />
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12">
+            <Button x:Name="SaveButton" Content="Сохранить" Style="{StaticResource AccentButtonStyle}"
+                    MinWidth="130" Click="SaveButton_Click" />
+            <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />
+        </StackPanel>
+    </Grid>
+</Page>

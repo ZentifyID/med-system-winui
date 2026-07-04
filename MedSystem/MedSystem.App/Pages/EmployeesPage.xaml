@@ -18,11 +18,14 @@
         <!-- Заголовок -->
         <Grid Grid.Row="0">
             <TextBlock Text="Сотрудники" Style="{StaticResource TitleTextBlockStyle}" />
-            <TextBlock x:Name="CountText" Text="" VerticalAlignment="Bottom"
-                       HorizontalAlignment="Right" Opacity="0.6" />
+            <StackPanel Orientation="Horizontal" Spacing="16" HorizontalAlignment="Right">
+                <TextBlock x:Name="CountText" Text="" VerticalAlignment="Center" Opacity="0.6" />
+                <Button Content="+ Добавить" Style="{StaticResource AccentButtonStyle}"
+                        Click="AddButton_Click" />
+            </StackPanel>
         </Grid>
 
-        <!-- Поиск -->
+        <!-- Поиск и фильтр -->
         <Grid Grid.Row="1" Margin="0,16,0,12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -41,7 +44,7 @@
         </Grid>
 
         <!-- Шапка таблицы -->
-        <Grid Grid.Row="2" Padding="16,8" >
+        <Grid Grid.Row="2" Padding="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1.4*" />
@@ -57,10 +60,20 @@
         </Grid>
 
         <!-- Список -->
-        <ListView x:Name="EmployeesList" Grid.Row="3" SelectionMode="Single">
+        <ListView x:Name="EmployeesList" Grid.Row="3" SelectionMode="Single"
+                  IsDoubleTapEnabled="True" DoubleTapped="EmployeesList_DoubleTapped">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:EmployeeRow">
-                    <Grid Padding="4,10">
+                    <Grid Padding="4,10" Background="Transparent">
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Открыть / Редактировать"
+                                                Tag="{x:Bind Id}" Click="OpenMenuItem_Click" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Удалить"
+                                                Tag="{x:Bind Id}" Click="DeleteMenuItem_Click" />
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="1.4*" />
