@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -43,6 +43,13 @@ namespace MedSystem.App
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            // Упакованное приложение: база хранится в LocalFolder пользователя
+            // (папка установки MSIX доступна только для чтения)
+            MedSystem.Data.Db.DbPath = Path.Combine(
+                Windows.Storage.ApplicationData.Current.LocalFolder.Path,
+                "med_system.db");
+            MedSystem.Data.DatabaseInitializer.Initialize();
+
             _window = new MainWindow();
             _window.Activate();
         }
