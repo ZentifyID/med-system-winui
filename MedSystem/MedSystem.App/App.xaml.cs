@@ -45,7 +45,7 @@ namespace MedSystem.App
         {
             // Упакованное приложение: база хранится в LocalFolder пользователя
             // (папка установки MSIX доступна только для чтения)
-            MedSystem.Data.Db.DbPath = Path.Combine(
+            MedSystem.Data.Db.DbPath = System.IO.Path.Combine(
                 Windows.Storage.ApplicationData.Current.LocalFolder.Path,
                 "med_system.db");
             MedSystem.Data.DatabaseInitializer.Initialize();
