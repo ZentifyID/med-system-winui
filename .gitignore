@@ -1,0 +1,51 @@
+# Сборка
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]64/
+[Bb]uild[Ll]og.*
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vsp
+*.vspx
+*.sap
+
+# Пакеты и кэши
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Публикация и MSIX
+[Pp]ublish/
+*.appx
+*.appxbundle
+*.appxupload
+*.msix
+*.msixbundle
+*.msixupload
+AppPackages/
+BundleArtifacts/
+*.pfx
+
+# Тесты и покрытие
+TestResults/
+*.coverage
+*.coveragexml
+.sonarqube/
+
+# Прочее
+*.log
+*.tmp
+*.cache
+.idea/

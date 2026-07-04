@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MedSystem.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MedSystem.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
