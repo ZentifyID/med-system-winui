@@ -22,6 +22,12 @@ namespace MedSystem.App.Pages
         public string Fluorography { get; set; } = "";
         public bool IsExpired { get; set; }
         public bool IsExpiring { get; set; }
+        public Microsoft.UI.Xaml.Media.Brush SanminimumBg { get; set; } = Badges.TransparentBg;
+        public Microsoft.UI.Xaml.Media.Brush SanminimumFg { get; set; } = Badges.NormalFg;
+        public Microsoft.UI.Xaml.Media.Brush MedicalExamBg { get; set; } = Badges.TransparentBg;
+        public Microsoft.UI.Xaml.Media.Brush MedicalExamFg { get; set; } = Badges.NormalFg;
+        public Microsoft.UI.Xaml.Media.Brush FluorographyBg { get; set; } = Badges.TransparentBg;
+        public Microsoft.UI.Xaml.Media.Brush FluorographyFg { get; set; } = Badges.NormalFg;
     }
 
     public sealed partial class EmployeesPage : Page
@@ -48,6 +54,12 @@ namespace MedSystem.App.Pages
         {
             _allRows = EmployeeRepository.GetAll().Select(emp =>
             {
+                var sanStatus = ExpirationRules.GetSingleCheckupStatus(emp.SanminimumDate);
+                var medStatus = ExpirationRules.GetSingleCheckupStatus(emp.MedicalExamDate);
+                var fluStatus = ExpirationRules.GetSingleCheckupStatus(emp.FluorographyDate);
+                var (sanBg, sanFg) = Badges.For(sanStatus.IsExpired, sanStatus.IsExpiring);
+                var (medBg, medFg) = Badges.For(medStatus.IsExpired, medStatus.IsExpiring);
+                var (fluBg, fluFg) = Badges.For(fluStatus.IsExpired, fluStatus.IsExpiring);
                 var (isExpired, isExpiring) = ExpirationRules.GetPersonStatus(
                     new[] { emp.SanminimumDate, emp.MedicalExamDate, emp.FluorographyDate });
                 return new EmployeeRow
@@ -60,6 +72,9 @@ namespace MedSystem.App.Pages
                     Fluorography = emp.FluorographyDate,
                     IsExpired = isExpired,
                     IsExpiring = isExpiring,
+                    SanminimumBg = sanBg, SanminimumFg = sanFg,
+                    MedicalExamBg = medBg, MedicalExamFg = medFg,
+                    FluorographyBg = fluBg, FluorographyFg = fluFg,
                 };
             }).ToList();
             ApplyFilter();

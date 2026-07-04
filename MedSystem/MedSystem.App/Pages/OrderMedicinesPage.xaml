@@ -15,12 +15,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Заказ лекарств" Style="{StaticResource TitleTextBlockStyle}" />
-        <TextBlock Grid.Row="1" Margin="0,8,0,16" Opacity="0.6"
+        <TextBlock Grid.Row="0" Text="Заказ лекарств" Style="{StaticResource TitleTextBlockStyle}"
+                   HorizontalAlignment="Center" />
+        <TextBlock Grid.Row="1" Margin="0,8,0,16" Opacity="0.6" MaxWidth="900" HorizontalAlignment="Center"
                    Text="Отмеченные позиции будут списаны, вместо них добавятся новые партии с указанным количеством и сроком годности."
                    TextWrapping="Wrap" />
 
-        <ListView x:Name="OrderList" Grid.Row="2" SelectionMode="None">
+        <ListView x:Name="OrderList" Grid.Row="2" SelectionMode="None"
+                  MaxWidth="900" HorizontalAlignment="Center">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:OrderRow">
                     <Grid Padding="4,10" ColumnSpacing="12">
@@ -51,7 +53,8 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0"
+                    HorizontalAlignment="Center">
             <Button Content="Оформить заказ" Style="{StaticResource AccentButtonStyle}"
                     MinWidth="150" Click="ConfirmButton_Click" />
             <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />

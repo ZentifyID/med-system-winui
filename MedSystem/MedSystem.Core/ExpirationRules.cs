@@ -45,6 +45,19 @@ public static class ExpirationRules
         return (isExpired, isExpiring);
     }
 
+    /// <summary>Статус одного документа человека (действует 1 год).</summary>
+    public static (bool IsExpired, bool IsExpiring) GetSingleCheckupStatus(string checkupDate)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        var warningEdge = today.AddDays(WarningDays);
+
+        if (!TryParseDate(checkupDate, out var passed))
+            return (false, false);
+
+        var expires = passed.AddYears(1);
+        return (expires < today, expires >= today && expires <= warningEdge);
+    }
+
     /// <summary>Статус срока годности лекарства.</summary>
     public static (bool IsExpired, bool IsExpiring) GetMedicineStatus(string expirationDate)
     {

@@ -22,7 +22,10 @@ namespace MedSystem.App.Pages
         public bool IsExpired { get; set; }
         public bool IsExpiring { get; set; }
         public bool IsLowQuantity { get; set; }
-        public Brush? RowBrush { get; set; }
+        public Brush QtyBg { get; set; } = Badges.TransparentBg;
+        public Brush QtyFg { get; set; } = Badges.NormalFg;
+        public Brush DateBg { get; set; } = Badges.TransparentBg;
+        public Brush DateFg { get; set; } = Badges.NormalFg;
     }
 
     public sealed partial class MedicinesPage : Page
@@ -50,17 +53,12 @@ namespace MedSystem.App.Pages
 
         private void LoadData()
         {
-            var defaultBrush = (Brush)Application.Current.Resources["TextFillColorPrimaryBrush"];
-            var warningBrush = new SolidColorBrush(Microsoft.UI.Colors.DarkOrange);
-            var dangerBrush = new SolidColorBrush(Microsoft.UI.Colors.Firebrick);
-
             _allRows = MedicineRepository.GetAll().Select(m =>
             {
                 var (isExpired, isExpiring) = ExpirationRules.GetMedicineStatus(m.ExpirationDate);
                 var isLow = m.Quantity <= LowQuantityThreshold;
-                var brush = (isExpired || isLow) ? dangerBrush
-                          : isExpiring ? warningBrush
-                          : defaultBrush;
+                var (dateBg, dateFg) = Badges.For(isExpired, isExpiring);
+                var (qtyBg, qtyFg) = Badges.For(isLow, false);
                 return new MedicineRow
                 {
                     Id = m.Id,
@@ -71,7 +69,10 @@ namespace MedSystem.App.Pages
                     IsExpired = isExpired,
                     IsExpiring = isExpiring,
                     IsLowQuantity = isLow,
-                    RowBrush = brush,
+                    QtyBg = qtyBg,
+                    QtyFg = qtyFg,
+                    DateBg = dateBg,
+                    DateFg = dateFg,
                 };
             }).ToList();
             ApplyFilter();

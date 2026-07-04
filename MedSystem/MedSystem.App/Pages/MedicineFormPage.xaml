@@ -16,7 +16,7 @@
         <TextBlock x:Name="TitleText" Grid.Row="0" Text="Новое лекарство"
                    Style="{StaticResource TitleTextBlockStyle}" />
 
-        <StackPanel Grid.Row="1" Margin="0,16,0,16" Spacing="16" MaxWidth="480" HorizontalAlignment="Left">
+        <StackPanel Grid.Row="1" Margin="0,16,0,16" Spacing="16" MaxWidth="480" HorizontalAlignment="Center">
             <TextBox x:Name="NameBox" Header="Название" MaxLength="255" />
             <TextBox x:Name="DosageBox" Header="Дозировка" PlaceholderText="напр. 500 мг" MaxLength="64" />
             <NumberBox x:Name="QuantityBox" Header="Количество" Minimum="0" Maximum="100000"
@@ -25,7 +25,8 @@
                      PlaceholderText="дд.мм.гггг" MaxLength="10" />
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12"
+                    HorizontalAlignment="Center">
             <Button Content="Сохранить" Style="{StaticResource AccentButtonStyle}"
                     MinWidth="130" Click="SaveButton_Click" />
             <Button Content="Отмена" MinWidth="110" Click="CancelButton_Click" />
