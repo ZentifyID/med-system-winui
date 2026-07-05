@@ -21,8 +21,16 @@ namespace MedSystem.App
 
             AppWindow.Resize(new Windows.Graphics.SizeInt32(1280, 820));
 
-            if (Nav.SettingsItem is NavigationViewItem settingsItem)
-                settingsItem.Content = "Настройки";
+            // SettingsItem создаётся при применении шаблона NavigationView,
+            // а в конструкторе он ещё null — переводим по событию Loaded.
+            Nav.Loaded += (_, _) =>
+            {
+                if (Nav.SettingsItem is NavigationViewItem settingsItem)
+                {
+                    settingsItem.Content = "Настройки";
+                    ToolTipService.SetToolTip(settingsItem, "Настройки");
+                }
+            };
 
             ThemeHelper.Initialize(this);
             ContentFrame.Navigate(typeof(HomePage));
