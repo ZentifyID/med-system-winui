@@ -16,7 +16,7 @@
   <mp:PhoneIdentity PhoneProductId="7dcbfeba-b488-4833-b54e-351b4005255c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>MedSystem.App</DisplayName>
+    <DisplayName>Медицинская система</DisplayName>
     <PublisherDisplayName>zgami</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -35,8 +35,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="MedSystem.App"
-        Description="MedSystem.App"
+        DisplayName="Медицинская система"
+        Description="Медицинская система"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

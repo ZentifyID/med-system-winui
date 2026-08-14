@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Windowing;
 
 namespace MedSystem.App
 {
@@ -13,7 +14,7 @@ namespace MedSystem.App
         {
             _window = window;
             if (_window.Content is FrameworkElement fe)
-                fe.RequestedTheme = LoadSaved();
+                SetTheme(fe, LoadSaved());
         }
 
         public static ElementTheme Current =>
@@ -22,8 +23,22 @@ namespace MedSystem.App
         public static void Apply(ElementTheme theme)
         {
             if (_window?.Content is FrameworkElement fe)
-                fe.RequestedTheme = theme;
+                SetTheme(fe, theme);
             Windows.Storage.ApplicationData.Current.LocalSettings.Values[SettingsKey] = theme.ToString();
+        }
+
+        private static void SetTheme(FrameworkElement root, ElementTheme theme)
+        {
+            root.RequestedTheme = theme;
+            if (_window != null && AppWindowTitleBar.IsCustomizationSupported())
+            {
+                _window.AppWindow.TitleBar.PreferredTheme = theme switch
+                {
+                    ElementTheme.Light => TitleBarTheme.Light,
+                    ElementTheme.Dark => TitleBarTheme.Dark,
+                    _ => TitleBarTheme.UseDefaultAppMode,
+                };
+            }
         }
 
         private static ElementTheme LoadSaved() =>

@@ -24,6 +24,8 @@ namespace MedSystem.App.Pages
                 _ => 0,
             };
             _loading = false;
+            var version = Windows.ApplicationModel.Package.Current.Id.Version;
+            VersionText.Text = $"Версия: {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
             DbPathText.Text = $"База данных: {MedSystem.Data.Db.DbPath}";
         }
 

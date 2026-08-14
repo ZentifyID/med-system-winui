@@ -27,8 +27,9 @@
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
             <StackPanel Padding="20,16" Spacing="6">
                 <TextBlock Text="О программе" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                <TextBlock Text="Med System — учёт обращений, сотрудников, студентов и лекарств медпункта колледжа."
+                <TextBlock Text="Медицинская система — учёт обращений, сотрудников, студентов и лекарств медпункта колледжа."
                            TextWrapping="Wrap" Opacity="0.7" />
+                <TextBlock x:Name="VersionText" FontSize="12" Opacity="0.6" />
                 <TextBlock x:Name="DbPathText" IsTextSelectionEnabled="True" FontSize="12" Opacity="0.6"
                            TextWrapping="Wrap" />
             </StackPanel>

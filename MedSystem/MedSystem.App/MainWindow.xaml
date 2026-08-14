@@ -19,7 +19,7 @@
                         VerticalAlignment="Center" Margin="16,0,0,0">
                 <FontIcon Glyph="&#xE95E;" FontSize="14"
                           Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
-                <TextBlock Text="Med System" Style="{StaticResource CaptionTextBlockStyle}"
+                <TextBlock Text="Медицинская система" Style="{StaticResource CaptionTextBlockStyle}"
                            VerticalAlignment="Center" />
             </StackPanel>
         </Grid>

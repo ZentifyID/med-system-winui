@@ -12,7 +12,7 @@ namespace MedSystem.App
         public MainWindow()
         {
             InitializeComponent();
-            Title = "Med System";
+            Title = "Медицинская система";
 
             // Mica-фон и контент под заголовком окна (Fluent Design)
             SystemBackdrop = new MicaBackdrop();
