@@ -70,6 +70,12 @@ namespace MedSystem.App.Pages
             }
         }
 
+        private void ShowStudentsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { Tag: long groupId })
+                Frame.Navigate(typeof(StudentsPage), groupId);
+        }
+
         private async Task ShowNameDialogAsync(GroupRow? existing)
         {
             var box = new TextBox

@@ -111,11 +111,14 @@ public static class AppealRepository
                 {
                     reader.GetString(0), reader.GetString(1), reader.GetString(2)
                 }.Where(p => !string.IsNullOrWhiteSpace(p)));
+                var affiliation = reader.IsDBNull(4) ? "" : reader.GetString(4);
                 persons.Add(new PersonOption
                 {
-                    Display = $"{fio} (Сотрудник, {reader.GetString(4)})",
+                    Display = string.IsNullOrWhiteSpace(affiliation)
+                        ? $"{fio} (Сотрудник)"
+                        : $"{fio} (Сотрудник, {affiliation})",
                     BirthDate = reader.GetString(3),
-                    GroupName = reader.GetString(4),
+                    GroupName = affiliation,
                 });
             }
         }
@@ -124,7 +127,7 @@ public static class AppealRepository
         {
             cmd.CommandText = """
                 SELECT s.last_name, s.first_name, s.middle_name, s.birth_date, g.name
-                FROM students s JOIN groups g ON s.group_id = g.id
+                FROM students s LEFT JOIN groups g ON s.group_id = g.id
                 """;
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -133,11 +136,14 @@ public static class AppealRepository
                 {
                     reader.GetString(0), reader.GetString(1), reader.GetString(2)
                 }.Where(p => !string.IsNullOrWhiteSpace(p)));
+                var groupName = reader.IsDBNull(4) ? "" : reader.GetString(4);
                 persons.Add(new PersonOption
                 {
-                    Display = $"{fio} (Группа {reader.GetString(4)})",
+                    Display = string.IsNullOrWhiteSpace(groupName)
+                        ? $"{fio} (Студент)"
+                        : $"{fio} (Группа {groupName})",
                     BirthDate = reader.GetString(3),
-                    GroupName = reader.GetString(4),
+                    GroupName = groupName,
                 });
             }
         }

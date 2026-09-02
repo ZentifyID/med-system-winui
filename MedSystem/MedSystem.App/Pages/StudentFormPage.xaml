@@ -63,6 +63,8 @@
                     <TextBox x:Name="FluorographyBox" Grid.Column="2"
                              Header="Дата флюорографии" PlaceholderText="дд.мм.гггг" MaxLength="10" />
                 </Grid>
+
+                <TextBox x:Name="HealthGroupBox" Header="Группа здоровья" MaxLength="100" />
             </StackPanel>
         </ScrollViewer>
 

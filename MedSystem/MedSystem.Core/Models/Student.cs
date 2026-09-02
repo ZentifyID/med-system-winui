@@ -16,6 +16,7 @@ public class Student
     public string SanminimumDate { get; set; } = "";
     public string MedicalExamDate { get; set; } = "";
     public string FluorographyDate { get; set; } = "";
+    public string HealthGroup { get; set; } = "";
 
     public string FullName => $"{LastName} {FirstName} {MiddleName}".Trim();
 }

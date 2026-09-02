@@ -24,23 +24,23 @@ public static class Validators
 
         CheckName(errors, e.LastName, "Фамилия");
         CheckName(errors, e.FirstName, "Имя");
-        CheckName(errors, e.MiddleName, "Отчество");
-        CheckDate(errors, e.BirthDate, "Дата рождения");
+        CheckName(errors, e.MiddleName, "Отчество", required: false);
+        CheckDate(errors, e.BirthDate, "Дата рождения", required: false);
 
-        if (e.Affiliation is not ("основной" or "внешний"))
+        if (!string.IsNullOrWhiteSpace(e.Affiliation) && e.Affiliation is not ("основной" or "внешний"))
             errors.Add("Поле 'Принадлежность' должно быть 'основной' или 'внешний'.");
 
         CheckDigits(errors, e.PassportSeries, "Паспорт: серия", 4);
         CheckDigits(errors, e.PassportNumber, "Паспорт: номер", 6);
-        CheckRequired(errors, e.PassportIssuedBy, "Паспорт: кем выдан", maxLength: 255);
-        CheckDate(errors, e.PassportIssueDate, "Паспорт: дата выдачи");
+        CheckText(errors, e.PassportIssuedBy, "Паспорт: кем выдан", maxLength: 255, required: false);
+        CheckDate(errors, e.PassportIssueDate, "Паспорт: дата выдачи", required: false);
         CheckDigits(errors, e.PassportDepartmentCode, "Паспорт: код подразделения", 6);
 
         CheckDigits(errors, e.Oms, "ОМС", 16);
-        CheckRequired(errors, e.Address, "Адрес проживания", maxLength: 255);
-        CheckDate(errors, e.SanminimumDate, "Дата санминимума");
-        CheckDate(errors, e.MedicalExamDate, "Дата медосмотра");
-        CheckDate(errors, e.FluorographyDate, "Дата флюорографии");
+        CheckText(errors, e.Address, "Адрес проживания", maxLength: 255, required: false);
+        CheckDate(errors, e.SanminimumDate, "Дата санминимума", required: false);
+        CheckDate(errors, e.MedicalExamDate, "Дата медосмотра", required: false);
+        CheckDate(errors, e.FluorographyDate, "Дата флюорографии", required: false);
 
         return errors;
     }
@@ -49,19 +49,16 @@ public static class Validators
     {
         var errors = new List<string>();
 
-        if (s.GroupId <= 0)
-            errors.Add("Поле 'Группа' обязательно.");
-
         CheckName(errors, s.LastName, "Фамилия");
         CheckName(errors, s.FirstName, "Имя");
-        CheckName(errors, s.MiddleName, "Отчество");
-        CheckDate(errors, s.BirthDate, "Дата рождения");
+        CheckName(errors, s.MiddleName, "Отчество", required: false);
+        CheckDate(errors, s.BirthDate, "Дата рождения", required: false);
 
         CheckDigits(errors, s.Oms, "ОМС", 16);
-        CheckRequired(errors, s.Address, "Адрес проживания", maxLength: 255);
-        CheckDate(errors, s.SanminimumDate, "Дата санминимума");
-        CheckDate(errors, s.MedicalExamDate, "Дата медосмотра");
-        CheckDate(errors, s.FluorographyDate, "Дата флюорографии");
+        CheckText(errors, s.Address, "Адрес проживания", maxLength: 255, required: false);
+        CheckDate(errors, s.SanminimumDate, "Дата санминимума", required: false);
+        CheckDate(errors, s.MedicalExamDate, "Дата медосмотра", required: false);
+        CheckDate(errors, s.FluorographyDate, "Дата флюорографии", required: false);
 
         return errors;
     }
@@ -69,8 +66,8 @@ public static class Validators
     public static List<string> ValidateMedicine(Medicine m)
     {
         var errors = new List<string>();
-        CheckRequired(errors, m.Name, "Название", maxLength: 255);
-        CheckRequired(errors, m.Dosage, "Дозировка", maxLength: 64);
+        CheckText(errors, m.Name, "Название", maxLength: 255);
+        CheckText(errors, m.Dosage, "Дозировка", maxLength: 64);
         if (m.Quantity < 0)
             errors.Add("Поле 'Количество' не может быть отрицательным.");
         CheckDate(errors, m.ExpirationDate, "Срок годности");
@@ -83,35 +80,44 @@ public static class Validators
         if (a.Number <= 0)
             errors.Add("Номер обращения должен быть положительным числом.");
         CheckDate(errors, a.CreatedAt, "Дата обращения");
-        CheckRequired(errors, a.Sender, "Отправитель", maxLength: 255);
-        CheckRequired(errors, a.Complaints, "Жалобы", maxLength: 2000);
+        CheckText(errors, a.Sender, "Отправитель", maxLength: 255);
+        CheckText(errors, a.Complaints, "Жалобы", maxLength: 2000);
         return errors;
     }
 
     // ── Вспомогательные проверки ─────────────────────────────────────
 
-    private static void CheckRequired(List<string> errors, string value, string label, int maxLength = 0)
+    private static void CheckText(List<string> errors, string value, string label, int maxLength = 0, bool required = true)
     {
         if (string.IsNullOrWhiteSpace(value))
-            errors.Add($"Поле '{label}' обязательно.");
+        {
+            if (required)
+                errors.Add($"Поле '{label}' обязательно.");
+        }
         else if (maxLength > 0 && value.Length > maxLength)
             errors.Add($"Поле '{label}' не должно превышать {maxLength} символов.");
     }
 
-    private static void CheckName(List<string> errors, string value, string label)
+    private static void CheckName(List<string> errors, string value, string label, bool required = true)
     {
         if (string.IsNullOrWhiteSpace(value))
-            errors.Add($"Поле '{label}' обязательно.");
+        {
+            if (required)
+                errors.Add($"Поле '{label}' обязательно.");
+        }
         else if (value.Length > 50)
             errors.Add($"Поле '{label}' не должно превышать 50 символов.");
         else if (!IsValidName(value))
             errors.Add($"Поле '{label}' должно содержать только буквы (допускаются дефис и пробел).");
     }
 
-    private static void CheckDate(List<string> errors, string value, string label)
+    private static void CheckDate(List<string> errors, string value, string label, bool required = true)
     {
         if (string.IsNullOrWhiteSpace(value))
-            errors.Add($"Поле '{label}' обязательно.");
+        {
+            if (required)
+                errors.Add($"Поле '{label}' обязательно.");
+        }
         else if (!IsValidDate(value))
             errors.Add($"Поле '{label}' должно быть в формате ДД.ММ.ГГГГ и корректной датой.");
     }
@@ -119,7 +125,7 @@ public static class Validators
     private static void CheckDigits(List<string> errors, string value, string label, int exactLength)
     {
         if (string.IsNullOrWhiteSpace(value))
-            errors.Add($"Поле '{label}' обязательно.");
+            return;
         else if (value.Length != exactLength || !value.All(char.IsDigit))
             errors.Add($"Поле '{label}' должно содержать ровно {exactLength} цифр.");
     }

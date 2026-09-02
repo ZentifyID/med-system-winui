@@ -28,11 +28,19 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="SearchBox"
                      PlaceholderText="Поиск по ФИО..."
                      TextChanged="SearchBox_TextChanged" />
-            <ComboBox x:Name="FilterBox" Grid.Column="1" Margin="12,0,0,0"
+            <AutoSuggestBox x:Name="GroupFilterBox" Grid.Column="1" Margin="12,0,0,0"
+                            MinWidth="220" PlaceholderText="Поиск группы..."
+                            DisplayMemberPath="Name"
+                            TextMemberPath="Name"
+                            TextChanged="GroupFilterBox_TextChanged"
+                            SuggestionChosen="GroupFilterBox_SuggestionChosen"
+                            QuerySubmitted="GroupFilterBox_QuerySubmitted" />
+            <ComboBox x:Name="FilterBox" Grid.Column="2" Margin="12,0,0,0"
                       MinWidth="200" SelectedIndex="0"
                       SelectionChanged="FilterBox_SelectionChanged">
                 <x:String>Все студенты</x:String>

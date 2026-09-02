@@ -28,7 +28,9 @@ namespace MedSystem.App.Pages
             _studentId = e.Parameter is long id ? id : 0;
 
             _groups = GroupRepository.GetAll();
+            _groups.Insert(0, new Group { Name = "Не указана" });
             GroupBox.ItemsSource = _groups;
+            GroupBox.SelectedIndex = 0;
 
             if (_studentId > 0)
             {
@@ -51,6 +53,7 @@ namespace MedSystem.App.Pages
             SanminimumBox.Text = s.SanminimumDate;
             MedicalExamBox.Text = s.MedicalExamDate;
             FluorographyBox.Text = s.FluorographyDate;
+            HealthGroupBox.Text = s.HealthGroup;
         }
 
         private Student CollectForm() => new()
@@ -66,6 +69,7 @@ namespace MedSystem.App.Pages
             SanminimumDate = SanminimumBox.Text.Trim(),
             MedicalExamDate = MedicalExamBox.Text.Trim(),
             FluorographyDate = FluorographyBox.Text.Trim(),
+            HealthGroup = HealthGroupBox.Text.Trim(),
         };
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)

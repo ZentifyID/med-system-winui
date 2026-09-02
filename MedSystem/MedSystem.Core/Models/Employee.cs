@@ -8,8 +8,8 @@ public class Employee
     public string FirstName { get; set; } = "";
     public string MiddleName { get; set; } = "";
     public string BirthDate { get; set; } = "";
-    /// <summary>"основной" или "внешний" (в БД действует CHECK-ограничение).</summary>
-    public string Affiliation { get; set; } = "основной";
+    /// <summary>"основной", "внешний" или пустая строка.</summary>
+    public string Affiliation { get; set; } = "";
     public string PassportSeries { get; set; } = "";
     public string PassportNumber { get; set; } = "";
     public string PassportIssuedBy { get; set; } = "";

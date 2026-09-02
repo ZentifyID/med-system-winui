@@ -3,11 +3,49 @@ using Microsoft.Data.Sqlite;
 namespace MedSystem.Data;
 
 /// <summary>
-/// Создание схемы БД. DDL идентичен python-версии — обе программы
-/// работают с одним и тем же файлом med_system.db без миграций.
+/// Создание и обновление схемы БД.
 /// </summary>
 public static class DatabaseInitializer
 {
+    private const string EmployeesTableSql = """
+        CREATE TABLE IF NOT EXISTS employees (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            last_name TEXT NOT NULL,
+            first_name TEXT NOT NULL,
+            middle_name TEXT NOT NULL,
+            birth_date TEXT NOT NULL,
+            affiliation TEXT CHECK(affiliation IN ('основной', 'внешний')),
+            passport_series TEXT NOT NULL,
+            passport_number TEXT NOT NULL,
+            passport_issued_by TEXT NOT NULL,
+            passport_issue_date TEXT NOT NULL,
+            passport_department_code TEXT NOT NULL,
+            oms TEXT NOT NULL,
+            address TEXT NOT NULL,
+            sanminimum_date TEXT NOT NULL,
+            medical_exam_date TEXT NOT NULL,
+            fluorography_date TEXT NOT NULL
+        )
+        """;
+
+    private const string StudentsTableSql = """
+        CREATE TABLE IF NOT EXISTS students (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            group_id INTEGER,
+            last_name TEXT NOT NULL,
+            first_name TEXT NOT NULL,
+            middle_name TEXT NOT NULL,
+            birth_date TEXT NOT NULL,
+            oms TEXT NOT NULL,
+            address TEXT NOT NULL,
+            sanminimum_date TEXT NOT NULL,
+            medical_exam_date TEXT NOT NULL,
+            fluorography_date TEXT NOT NULL,
+            health_group TEXT NOT NULL DEFAULT '',
+            FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE RESTRICT
+        )
+        """;
+
     public static void Initialize()
     {
         using var conn = Db.Open();
@@ -20,43 +58,12 @@ public static class DatabaseInitializer
             )
             """);
 
-        Execute(conn, """
-            CREATE TABLE IF NOT EXISTS employees (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                last_name TEXT NOT NULL,
-                first_name TEXT NOT NULL,
-                middle_name TEXT NOT NULL,
-                birth_date TEXT NOT NULL,
-                affiliation TEXT NOT NULL CHECK(affiliation IN ('основной', 'внешний')),
-                passport_series TEXT NOT NULL,
-                passport_number TEXT NOT NULL,
-                passport_issued_by TEXT NOT NULL,
-                passport_issue_date TEXT NOT NULL,
-                passport_department_code TEXT NOT NULL,
-                oms TEXT NOT NULL,
-                address TEXT NOT NULL,
-                sanminimum_date TEXT NOT NULL,
-                medical_exam_date TEXT NOT NULL,
-                fluorography_date TEXT NOT NULL
-            )
-            """);
+        MigrateOptionalFields(conn);
 
-        Execute(conn, """
-            CREATE TABLE IF NOT EXISTS students (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                group_id INTEGER NOT NULL,
-                last_name TEXT NOT NULL,
-                first_name TEXT NOT NULL,
-                middle_name TEXT NOT NULL,
-                birth_date TEXT NOT NULL,
-                oms TEXT NOT NULL,
-                address TEXT NOT NULL,
-                sanminimum_date TEXT NOT NULL,
-                medical_exam_date TEXT NOT NULL,
-                fluorography_date TEXT NOT NULL,
-                FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE RESTRICT
-            )
-            """);
+        Execute(conn, EmployeesTableSql);
+        Execute(conn, StudentsTableSql);
+        if (!ColumnExists(conn, "students", "health_group"))
+            Execute(conn, "ALTER TABLE students ADD COLUMN health_group TEXT NOT NULL DEFAULT ''");
 
         Execute(conn, """
             CREATE TABLE IF NOT EXISTS medicines (
@@ -103,6 +110,63 @@ public static class DatabaseInitializer
         SeedIcdCodes(conn);
 
         tx.Commit();
+    }
+
+    private static void MigrateOptionalFields(SqliteConnection conn)
+    {
+        if (ColumnIsRequired(conn, "employees", "affiliation"))
+        {
+            Execute(conn, "ALTER TABLE employees RENAME TO employees_legacy");
+            Execute(conn, EmployeesTableSql);
+            Execute(conn, """
+                INSERT INTO employees
+                SELECT * FROM employees_legacy
+                """);
+            Execute(conn, "DROP TABLE employees_legacy");
+        }
+
+        if (ColumnIsRequired(conn, "students", "group_id"))
+        {
+            Execute(conn, "ALTER TABLE students RENAME TO students_legacy");
+            Execute(conn, StudentsTableSql);
+            Execute(conn, """
+                INSERT INTO students (
+                    id, group_id, last_name, first_name, middle_name, birth_date,
+                    oms, address, sanminimum_date, medical_exam_date, fluorography_date
+                )
+                SELECT id, group_id, last_name, first_name, middle_name, birth_date,
+                       oms, address, sanminimum_date, medical_exam_date, fluorography_date
+                FROM students_legacy
+                """);
+            Execute(conn, "DROP TABLE students_legacy");
+        }
+
+    }
+
+    private static bool ColumnIsRequired(SqliteConnection conn, string tableName, string columnName)
+    {
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = $"PRAGMA table_info('{tableName}')";
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            if (reader.GetString(1) == columnName)
+                return reader.GetInt64(3) == 1;
+        }
+        return false;
+    }
+
+    private static bool ColumnExists(SqliteConnection conn, string tableName, string columnName)
+    {
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = $"PRAGMA table_info('{tableName}')";
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            if (reader.GetString(1) == columnName)
+                return true;
+        }
+        return false;
     }
 
     private static void Execute(SqliteConnection conn, string sql)

@@ -40,7 +40,12 @@ namespace MedSystem.App.Pages
             FirstNameBox.Text = e.FirstName;
             MiddleNameBox.Text = e.MiddleName;
             BirthDateBox.Text = e.BirthDate;
-            AffiliationBox.SelectedIndex = e.Affiliation == "внешний" ? 1 : 0;
+            AffiliationBox.SelectedIndex = e.Affiliation switch
+            {
+                "основной" => 1,
+                "внешний" => 2,
+                _ => 0,
+            };
             OmsBox.Text = e.Oms;
             AddressBox.Text = e.Address;
             PassportSeriesBox.Text = e.PassportSeries;
@@ -60,7 +65,12 @@ namespace MedSystem.App.Pages
             FirstName = FirstNameBox.Text.Trim(),
             MiddleName = MiddleNameBox.Text.Trim(),
             BirthDate = BirthDateBox.Text.Trim(),
-            Affiliation = AffiliationBox.SelectedIndex == 1 ? "внешний" : "основной",
+            Affiliation = AffiliationBox.SelectedIndex switch
+            {
+                1 => "основной",
+                2 => "внешний",
+                _ => "",
+            },
             Oms = OmsBox.Text.Trim(),
             Address = AddressBox.Text.Trim(),
             PassportSeries = PassportSeriesBox.Text.Trim(),

@@ -19,9 +19,10 @@ public static class StudentRepository
         cmd.CommandText = """
             SELECT s.id, s.group_id, g.name, s.last_name, s.first_name, s.middle_name,
                    s.birth_date, s.oms, s.address,
-                   s.sanminimum_date, s.medical_exam_date, s.fluorography_date
+                   s.sanminimum_date, s.medical_exam_date, s.fluorography_date,
+                   s.health_group
             FROM students s
-            JOIN groups g ON s.group_id = g.id
+            LEFT JOIN groups g ON s.group_id = g.id
             ORDER BY s.last_name, s.first_name, s.middle_name
             """;
         using var reader = cmd.ExecuteReader();
@@ -31,8 +32,8 @@ public static class StudentRepository
             result.Add(new Student
             {
                 Id = reader.GetInt64(0),
-                GroupId = reader.GetInt64(1),
-                GroupName = reader.GetString(2),
+                GroupId = reader.IsDBNull(1) ? 0 : reader.GetInt64(1),
+                GroupName = reader.IsDBNull(2) ? "" : reader.GetString(2),
                 LastName = reader.GetString(3),
                 FirstName = reader.GetString(4),
                 MiddleName = reader.GetString(5),
@@ -42,6 +43,7 @@ public static class StudentRepository
                 SanminimumDate = reader.GetString(9),
                 MedicalExamDate = reader.GetString(10),
                 FluorographyDate = reader.GetString(11),
+                HealthGroup = reader.GetString(12),
             });
         }
         return result;
@@ -54,9 +56,10 @@ public static class StudentRepository
         cmd.CommandText = """
             SELECT s.id, s.group_id, g.name, s.last_name, s.first_name, s.middle_name,
                    s.birth_date, s.oms, s.address,
-                   s.sanminimum_date, s.medical_exam_date, s.fluorography_date
+                   s.sanminimum_date, s.medical_exam_date, s.fluorography_date,
+                   s.health_group
             FROM students s
-            JOIN groups g ON s.group_id = g.id
+            LEFT JOIN groups g ON s.group_id = g.id
             WHERE s.id = $id
             """;
         cmd.Parameters.AddWithValue("$id", id);
@@ -66,8 +69,8 @@ public static class StudentRepository
         return new Student
         {
             Id = reader.GetInt64(0),
-            GroupId = reader.GetInt64(1),
-            GroupName = reader.GetString(2),
+            GroupId = reader.IsDBNull(1) ? 0 : reader.GetInt64(1),
+            GroupName = reader.IsDBNull(2) ? "" : reader.GetString(2),
             LastName = reader.GetString(3),
             FirstName = reader.GetString(4),
             MiddleName = reader.GetString(5),
@@ -77,6 +80,7 @@ public static class StudentRepository
             SanminimumDate = reader.GetString(9),
             MedicalExamDate = reader.GetString(10),
             FluorographyDate = reader.GetString(11),
+            HealthGroup = reader.GetString(12),
         };
     }
 
@@ -87,10 +91,12 @@ public static class StudentRepository
         cmd.CommandText = """
             INSERT INTO students (
                 group_id, last_name, first_name, middle_name, birth_date,
-                oms, address, sanminimum_date, medical_exam_date, fluorography_date
+                oms, address, sanminimum_date, medical_exam_date, fluorography_date,
+                health_group
             ) VALUES (
                 $groupId, $lastName, $firstName, $middleName, $birthDate,
-                $oms, $address, $sanminimumDate, $medicalExamDate, $fluorographyDate
+                $oms, $address, $sanminimumDate, $medicalExamDate, $fluorographyDate,
+                $healthGroup
             )
             """;
         AddParameters(cmd, s);
@@ -106,7 +112,8 @@ public static class StudentRepository
                 group_id = $groupId, last_name = $lastName, first_name = $firstName,
                 middle_name = $middleName, birth_date = $birthDate, oms = $oms,
                 address = $address, sanminimum_date = $sanminimumDate,
-                medical_exam_date = $medicalExamDate, fluorography_date = $fluorographyDate
+                medical_exam_date = $medicalExamDate, fluorography_date = $fluorographyDate,
+                health_group = $healthGroup
             WHERE id = $id
             """;
         AddParameters(cmd, s);
@@ -125,7 +132,7 @@ public static class StudentRepository
 
     private static void AddParameters(Microsoft.Data.Sqlite.SqliteCommand cmd, Student s)
     {
-        cmd.Parameters.AddWithValue("$groupId", s.GroupId);
+        cmd.Parameters.AddWithValue("$groupId", s.GroupId > 0 ? s.GroupId : DBNull.Value);
         cmd.Parameters.AddWithValue("$lastName", s.LastName);
         cmd.Parameters.AddWithValue("$firstName", s.FirstName);
         cmd.Parameters.AddWithValue("$middleName", s.MiddleName);
@@ -135,5 +142,6 @@ public static class StudentRepository
         cmd.Parameters.AddWithValue("$sanminimumDate", s.SanminimumDate);
         cmd.Parameters.AddWithValue("$medicalExamDate", s.MedicalExamDate);
         cmd.Parameters.AddWithValue("$fluorographyDate", s.FluorographyDate);
+        cmd.Parameters.AddWithValue("$healthGroup", s.HealthGroup);
     }
 }

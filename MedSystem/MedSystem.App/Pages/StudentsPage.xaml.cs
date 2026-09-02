@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using MedSystem.Core;
+using MedSystem.Core.Models;
 using MedSystem.Data.Repositories;
 
 namespace MedSystem.App.Pages
@@ -14,6 +15,7 @@ namespace MedSystem.App.Pages
     public class StudentRow
     {
         public long Id { get; set; }
+        public long GroupId { get; set; }
         public string FullName { get; set; } = "";
         public string GroupName { get; set; } = "";
         public string Sanminimum { get; set; } = "";
@@ -32,6 +34,8 @@ namespace MedSystem.App.Pages
     public sealed partial class StudentsPage : Page
     {
         private List<StudentRow> _allRows = new();
+        private List<Group> _groupOptions = new();
+        private long _selectedGroupId;
         public ObservableCollection<StudentRow> Rows { get; } = new();
 
         public StudentsPage()
@@ -46,7 +50,21 @@ namespace MedSystem.App.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            LoadGroupFilter(e.Parameter is long groupId ? groupId : null);
             LoadData();
+        }
+
+        private void LoadGroupFilter(long? requestedGroupId)
+        {
+            _groupOptions = GroupRepository.GetAll();
+            _groupOptions.Insert(0, new Group { Id = -1, Name = "Без группы" });
+
+            if (requestedGroupId.HasValue)
+                SelectGroup(requestedGroupId.Value);
+            else if (_selectedGroupId != 0)
+                SelectGroup(_selectedGroupId);
+            else
+                UpdateGroupSuggestions(GroupFilterBox.Text);
         }
 
         private void LoadData()
@@ -65,6 +83,7 @@ namespace MedSystem.App.Pages
                 return new StudentRow
                 {
                     Id = s.Id,
+                    GroupId = s.GroupId,
                     FullName = s.FullName,
                     GroupName = s.GroupName,
                     Sanminimum = s.SanminimumDate,
@@ -82,7 +101,7 @@ namespace MedSystem.App.Pages
 
         private void ApplyFilter()
         {
-            if (SearchBox == null || FilterBox == null)
+            if (SearchBox == null || GroupFilterBox == null || FilterBox == null)
                 return;
 
             var query = SearchBox.Text?.Trim().ToLowerInvariant() ?? "";
@@ -90,6 +109,22 @@ namespace MedSystem.App.Pages
 
             if (!string.IsNullOrEmpty(query))
                 filtered = filtered.Where(r => r.FullName.ToLowerInvariant().Contains(query));
+
+            if (_selectedGroupId > 0)
+            {
+                filtered = filtered.Where(r => r.GroupId == _selectedGroupId);
+            }
+            else if (_selectedGroupId == -1)
+            {
+                filtered = filtered.Where(r => r.GroupId == 0);
+            }
+            else
+            {
+                var groupQuery = GroupFilterBox.Text?.Trim();
+                if (!string.IsNullOrEmpty(groupQuery))
+                    filtered = filtered.Where(r =>
+                        r.GroupName.Contains(groupQuery, StringComparison.OrdinalIgnoreCase));
+            }
 
             filtered = FilterBox.SelectedIndex switch
             {
@@ -108,29 +143,64 @@ namespace MedSystem.App.Pages
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e) => ApplyFilter();
 
+        private void GroupFilterBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput)
+                return;
+
+            _selectedGroupId = 0;
+            UpdateGroupSuggestions(sender.Text);
+            ApplyFilter();
+        }
+
+        private void GroupFilterBox_SuggestionChosen(
+            AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem is Group group)
+                SelectGroup(group.Id);
+        }
+
+        private void GroupFilterBox_QuerySubmitted(
+            AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (args.ChosenSuggestion is Group group)
+            {
+                SelectGroup(group.Id);
+                return;
+            }
+
+            var exactMatch = _groupOptions.FirstOrDefault(g =>
+                string.Equals(g.Name, sender.Text.Trim(), StringComparison.OrdinalIgnoreCase));
+            if (exactMatch != null)
+                SelectGroup(exactMatch.Id);
+            else
+                ApplyFilter();
+        }
+
+        private void UpdateGroupSuggestions(string? query)
+        {
+            var text = query?.Trim() ?? "";
+            GroupFilterBox.ItemsSource = string.IsNullOrEmpty(text)
+                ? null
+                : _groupOptions.Where(g =>
+                    g.Name.Contains(text, StringComparison.OrdinalIgnoreCase)).Take(20).ToList();
+        }
+
+        private void SelectGroup(long groupId)
+        {
+            var group = _groupOptions.FirstOrDefault(g => g.Id == groupId);
+            _selectedGroupId = group?.Id ?? 0;
+            GroupFilterBox.Text = group?.Name ?? "";
+            GroupFilterBox.ItemsSource = null;
+            ApplyFilter();
+        }
+
         private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => ApplyFilter();
 
         // ── Действия ─────────────────────────────────────────────────
 
-        private async void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (GroupRepository.GetAll().Count == 0)
-            {
-                var dialog = new ContentDialog
-                {
-                    Title = "Нет групп",
-                    Content = "Сначала добавьте хотя бы одну учебную группу.",
-                    PrimaryButtonText = "К группам",
-                    CloseButtonText = "Отмена",
-                    XamlRoot = XamlRoot,
-                RequestedTheme = ActualTheme,
-                };
-                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                    Frame.Navigate(typeof(GroupsPage));
-                return;
-            }
+        private void AddButton_Click(object sender, RoutedEventArgs e) =>
             Frame.Navigate(typeof(StudentFormPage), 0L);
-        }
 
         private void GroupsButton_Click(object sender, RoutedEventArgs e) =>
             Frame.Navigate(typeof(GroupsPage));

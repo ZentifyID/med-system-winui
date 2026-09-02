@@ -101,7 +101,7 @@ public static class EmployeeRepository
         FirstName = r.GetString(2),
         MiddleName = r.GetString(3),
         BirthDate = r.GetString(4),
-        Affiliation = r.GetString(5),
+        Affiliation = r.IsDBNull(5) ? "" : r.GetString(5),
         PassportSeries = r.GetString(6),
         PassportNumber = r.GetString(7),
         PassportIssuedBy = r.GetString(8),
@@ -120,7 +120,7 @@ public static class EmployeeRepository
         cmd.Parameters.AddWithValue("$firstName", e.FirstName);
         cmd.Parameters.AddWithValue("$middleName", e.MiddleName);
         cmd.Parameters.AddWithValue("$birthDate", e.BirthDate);
-        cmd.Parameters.AddWithValue("$affiliation", e.Affiliation);
+        cmd.Parameters.AddWithValue("$affiliation", string.IsNullOrWhiteSpace(e.Affiliation) ? DBNull.Value : e.Affiliation);
         cmd.Parameters.AddWithValue("$passportSeries", e.PassportSeries);
         cmd.Parameters.AddWithValue("$passportNumber", e.PassportNumber);
         cmd.Parameters.AddWithValue("$passportIssuedBy", e.PassportIssuedBy);

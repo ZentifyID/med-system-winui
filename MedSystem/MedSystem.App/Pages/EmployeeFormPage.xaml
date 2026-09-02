@@ -41,6 +41,7 @@
                              Header="Дата рождения" PlaceholderText="дд.мм.гггг" MaxLength="10" />
                     <ComboBox x:Name="AffiliationBox" Grid.Row="2" Grid.Column="0"
                               Header="Принадлежность" SelectedIndex="0" HorizontalAlignment="Stretch">
+                        <x:String>Не указана</x:String>
                         <x:String>основной</x:String>
                         <x:String>внешний совместитель</x:String>
                     </ComboBox>
